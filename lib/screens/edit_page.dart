@@ -35,6 +35,7 @@ class _EditNotePageState extends State<EditNotePage> {
   Future<Note?> _createOrUpdateNote(String title, String content) {
     final notesService = Services.of(context).notesService;
     if (widget.note != null) {
+      
       return notesService.updateNote(widget.note!.id, title, content, _colorTap);
     } else {
       return notesService.createNote(title, content, _colorTap);
@@ -109,8 +110,8 @@ class _EditNotePageState extends State<EditNotePage> {
                             _colorTap = index;
                              setState(() {});
                           },
-                          child: circle(index, _colorTap));
-                    })),
+                          child: circle(index, _colorTap),);
+                    },),),
           ),
         ],
       ),

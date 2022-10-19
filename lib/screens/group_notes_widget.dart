@@ -16,8 +16,9 @@ class _GroupNotesWidgetState extends State<GroupNotesWidget> {
   Future<void> _signOut() async {
     final success = await Services.of(context).authService.signOut();
     if (success) {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (_) => const LoginWidget()));
+      // ignore: use_build_context_synchronously
+      await Navigator.pushReplacement<void, void>(
+          context, MaterialPageRoute(builder: (_) => const LoginWidget()),);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('There was an issue logging out.')));
@@ -83,7 +84,8 @@ class _GroupNotesWidgetState extends State<GroupNotesWidget> {
               }
               final notes = (snapshot.data ?? [])
                 ..sort((x, y) =>
-                    y.modifyTime.difference(x.modifyTime).inMilliseconds);              
+                    y.modifyTime.difference(x.modifyTime).inMilliseconds,); 
+                                 
               return Column(
                 children: notes.map(_toNoteWidget).toList(),
               );

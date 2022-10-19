@@ -17,20 +17,23 @@ class NotesService {
         .execute();
     if (response.error == null) {
       final results = response.data as List<dynamic>;
+
       return results.map((e) => toNote(e)).toList();
     }
     debugPrint('Error geting notes: ${response.error!.message}');
+
     return [];
   }
 
   Future<List<Note>> getNotesById(int taskId) async {
     final response = await _client
         .from(notes)
-        .select('id, title, content, create_time, modify_time, task')
+        .select('id, title, content, create_time, modify_time')
         .eq('id', taskId)
         .execute();
     if (response.error == null) {
       final results = response.data as List<dynamic>;
+
       return results.map((e) => toNote(e)).toList();
     }
     debugPrint('Error geting notes: ${response.error!.message}');
@@ -46,9 +49,11 @@ class NotesService {
         .execute();
     if (response.error == null) {
       final results = response.data as List<dynamic>;
-      return results.map((e) => toTask(e)).toList();
+
+      return results.map((e) => toTask(e as Map<String, dynamic>)).toList();
     }
     debugPrint('Error geting task: ${response.error!.message}');
+
     return [];
   }
 
@@ -60,6 +65,7 @@ class NotesService {
         })
         .eq('id', taskId)
         .execute();
+
     return null;
   }
 
@@ -69,7 +75,8 @@ class NotesService {
         .insert({'task': task, 'note_id': noteId}).execute();
     if (response.error == null) {
       final results = response.data as List<dynamic>;
-      return toTask(results[0]);
+
+      return toTask(results.first as Map<String, dynamic>);
     }
     debugPrint('Error creating note: ${response.error!.message}');
     return null;
@@ -82,6 +89,7 @@ class NotesService {
       return true;
     }
     debugPrint('Error deleting taks: ${response.error!.message}');
+
     return false;
   }
 
@@ -90,9 +98,11 @@ class NotesService {
         {'title': title, 'content': content, 'color_note': color}).execute();
     if (response.error == null) {
       final results = response.data as List<dynamic>;
+
       return toNote(results[0]);
     }
     debugPrint('Error creating note: ${response.error!.message}');
+
     return null;
   }
 
@@ -110,11 +120,30 @@ class NotesService {
         .execute();
     if (response.error == null) {
       final results = response.data as List<dynamic>;
+
       return toNote(results[0]);
     }
     debugPrint('Error editing note: ${response.error!.message}');
     return null;
   }
+
+  // Future<Note?> updateNoteModifyTime(
+  //     int id) async {
+  //   final response = await _client
+  //       .from(notes)
+  //       .update({
+  //         'modify_time': 'now()'
+  //       })
+  //       .eq('id', id)
+  //       .execute();
+  //   if (response.error == null) {
+  //     final results = response.data as List<dynamic>;
+
+  //     return toNote(results[0]);
+  //   }
+  //   debugPrint('Error editing note: ${response.error!.message}');
+  //   return null;
+  // }
 
   Future<bool> deleteNote(int id) async {
     final response = await _client.from(notes).delete().eq('id', id).execute();
@@ -122,25 +151,26 @@ class NotesService {
       return true;
     }
     debugPrint('Error deleting note: ${response.error!.message}');
+
     return false;
   }
 
-  Note toNote(Map<String, dynamic> result) {
+  Note toNote(result) {
     return Note(
-      result['id'],
-      result['title'],
-      result['content'],
-      DateTime.parse(result['create_time']),
-      DateTime.parse(result['modify_time']),
-      result['color_note'],
+      int.parse(result['id'].toString()),
+      result['title'].toString(),
+      result['content'].toString(),
+      DateTime.parse(result['create_time'].toString()),
+      DateTime.parse(result['modify_time'].toString()),
+      int.parse(result['color_note'].toString()),
     );
   }
 
   Todo toTask(Map<String, dynamic> result) {
     return Todo(
-      result['id'],
-      result['check'],
-      result['task'],
+      int.parse(result['id'].toString()),
+      result['check'] as bool,
+      result['task'].toString(),
     );
   }
 }

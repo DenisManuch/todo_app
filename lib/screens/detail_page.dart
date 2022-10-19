@@ -6,28 +6,30 @@ class NotePage extends StatefulWidget {
   final Note? note;
 
   NotePage({this.note});
-
   @override
   _NotePageState createState() => _NotePageState();
 }
 
 class _NotePageState extends State<NotePage> {
+  Color _colText = textColorK;
   @override
   void initState() {
-    textColor = _updateColor();
-    iconColor = _updateColor();
+    _colText = _updateColor();
+
     super.initState();
   }
 
   Future<List<Todo>> _getTask() async {
-    var dataTasks =
+    final dataTasks =
         Services.of(context).notesService.getTaskById(widget.note!.id);
+
     return dataTasks;
   }
 
   Color _updateColor() {
-    Color dataColor = ThemeData.estimateBrightnessForColor(
-                colorPallete[widget.note!.colorNote]) ==
+    final Color dataColor = ThemeData.estimateBrightnessForColor(
+              colorPallete[widget.note!.colorNote],
+            ) ==
             Brightness.light
         ? const Color.fromARGB(255, 97, 85, 85)
         : Colors.white;
@@ -41,18 +43,132 @@ class _NotePageState extends State<NotePage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            _inputDialog(context);
-          },
-          child: const Text('Add task')),
       appBar: AppBar(
         title: Text(
           widget.note!.title,
-          style: TextStyle(color: textColor),
+          style: TextStyle(color: _colText),
         ),
         backgroundColor: colorPallete[widget.note?.colorNote ?? 0],
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: colorPallete[widget.note?.colorNote ?? 0],
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton(
+                color: _colText,
+                onPressed: () {
+                  _inputDialog(context);
+                },
+                icon: const Icon(Icons.add_box_outlined)),
+            Text(
+              'Last changes: ${widget.note!.modifyTime.hour}:${widget.note!.modifyTime.minute}',
+              style: TextStyle(color: _colText),
+            ),
+            IconButton(
+                color: _colText,
+                onPressed: () {
+                  showModalBottomSheet(
+                      backgroundColor:
+                          colorPallete[widget.note?.colorNote ?? 0],
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Container(
+                          height: MediaQuery.of(context).size.height * 0.17,
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              InkWell(
+                                onTap: () {},
+                                child: SizedBox(
+                                  height: 30,
+                                  child: Row(
+                                    children: [
+                                      const SizedBox(
+                                        width: 15,
+                                      ),
+                                      Icon(
+                                        Icons.delete,
+                                        color: _colText,
+                                      ),
+                                      SizedBox(
+                                        width: 30,
+                                      ),
+                                      Text(
+                                        'Delete note',
+                                        style: TextStyle(color: _colText),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              InkWell(
+                                onTap: (() => print('dddd')),
+                                child: SizedBox(
+                                  height: 30,
+                                  child: Row(
+                                    children: [
+                                      const SizedBox(
+                                        width: 15,
+                                      ),
+                                      Icon(
+                                        Icons.delete,
+                                        color: _colText,
+                                      ),
+                                      SizedBox(
+                                        width: 30,
+                                      ),
+                                      Text(
+                                        'Delete note',
+                                        style: TextStyle(color: _colText),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              InkWell(
+                                onTap: (() => print('dddd')),
+                                child: SizedBox(
+                                  height: 30,
+                                  child: Row(
+                                    children: [
+                                      const SizedBox(
+                                        width: 15,
+                                      ),
+                                      Icon(
+                                        Icons.delete,
+                                        color: _colText,
+                                      ),
+                                      SizedBox(
+                                        width: 30,
+                                      ),
+                                      Text(
+                                        'Delete note',
+                                        style: TextStyle(color: _colText),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      });
+                },
+                icon: const Icon(Icons.more_vert_outlined))
+          ],
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -60,7 +176,7 @@ class _NotePageState extends State<NotePage> {
           children: <Widget>[
             Text(
               widget.note!.content ?? '',
-              style: TextStyle(fontSize: 20, color: textColor),
+              style: TextStyle(fontSize: 20, color: _colText),
             ),
             const SizedBox(
               height: 20,
@@ -75,71 +191,70 @@ class _NotePageState extends State<NotePage> {
 
   Widget _checkBox() {
     return FutureBuilder<List<Todo>>(
-        future:
-            _getTask(), 
-        builder: (context, snaphot) {
-          var tasks = (snaphot.data ?? []);
-          if (snaphot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(
-                color: Colors.black,
-                backgroundColor: Colors.white,
-              ),
-            );
-          }
-          if (snaphot.connectionState == ConnectionState.done) {
-            return ListView.builder(
-                itemCount: tasks.length,
-                itemBuilder: (context, index) {
-                  if (tasks.isEmpty) {
-                    return const Text('No tasks');
-                  }
-                  return GestureDetector(
-                    onLongPress: () {
-                      Services.of(context)
-                          .notesService
-                          .deleteTask(tasks[index].id);
-                      setState(() {});
-                    },
-                    child: Row(
-                      children: [
-                        Checkbox(
-                            value: tasks[index].check,
-                            onChanged: (bool? value) {
-                              tasks[index].check = value!;
-                              setState(() {
-                                Services.of(context)
-                                    .notesService
-                                    .updateTaskById(
-                                        tasks[index].id, tasks[index].check);
-                              });
-                            }),
-                        Expanded(
-                          child: Text(
-                            tasks[index].task,
-                            style: TextStyle(
-                              fontSize: 30,
-                              decoration: tasks[index].check
-                                  ? TextDecoration.lineThrough
-                                  : TextDecoration.none,
-                              color: tasks[index].check
-                                  ? textColor.withOpacity(0.5)
-                                  : textColor,
-                            ),
-                          ),
-                        ),
-                      ],
+      future: _getTask(),
+      builder: (context, snaphot) {
+        final _tasks = snaphot.data ?? [];
+        if (snaphot.hasData) {
+          return ListView.builder(
+            itemCount: _tasks.length,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onLongPress: () {
+                  Services.of(context)
+                      .notesService
+                      .deleteTask(_tasks[index].id);
+                  setState(() {});
+                },
+                child: Row(
+                  children: [
+                    Checkbox(
+                      value: _tasks[index].check,
+                      onChanged: (bool? value) {
+                        _tasks[index].check = value!;
+                        Services.of(context).notesService.updateTaskById(
+                              _tasks[index].id,
+                              _tasks[index].check,
+                            );
+                        setState(() {
+                          _getTask();
+                        });
+                      },
                     ),
-                  );
-                });
-          }
-          return const Text('No data!');
-        });
+                    Expanded(
+                      child: Text(
+                        _tasks[index].task,
+                        style: TextStyle(
+                          fontSize: 20,
+                          decoration: _tasks[index].check
+                              ? TextDecoration.lineThrough
+                              : TextDecoration.none,
+                          color: _tasks[index].check
+                              ? _colText.withOpacity(0.5)
+                              : _colText,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        }
+
+        return const Center(
+          child: CircularProgressIndicator(
+            color: Colors.black,
+            backgroundColor: Colors.white,
+          ),
+        );
+      },
+    );
   }
 
   Future _inputDialog(BuildContext context) async {
     String taskStr = '';
-    return showDialog(
+
+    return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -147,20 +262,26 @@ class _NotePageState extends State<NotePage> {
           content: Row(
             children: <Widget>[
               Expanded(
-                  child: TextFormField(
-                autofocus: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please, enter some text';
-                  }
-                  return null;
-                },
-                decoration: const InputDecoration(
-                    labelText: 'Prin new task', hintText: 'Task'),
-                onChanged: (value) {
-                  taskStr = value;
-                },
-              ))
+                child: TextFormField(
+                  maxLines: 5,
+                  minLines: 1,
+                  maxLength: 70,
+                  autofocus: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please, enter some text';
+                    }
+
+                    return null;
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Print new task',
+                  ),
+                  onChanged: (value) {
+                    taskStr = value;
+                  },
+                ),
+              )
             ],
           ),
           actions: <Widget>[
@@ -177,6 +298,7 @@ class _NotePageState extends State<NotePage> {
                 }
                 setState(() {
                   Navigator.of(context).pop();
+                  _getTask();
                 });
               },
             ),

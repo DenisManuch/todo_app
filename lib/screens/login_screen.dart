@@ -20,7 +20,7 @@ class _LoginWidgetState extends State<LoginWidget> {
       .authService
       .signUp(_emailController.text, _passwordController.text);
   if (success) {
-    await Navigator.pushReplacement(
+    await Navigator.pushReplacement<void, void>(
         context, MaterialPageRoute(builder: (_) => const GroupNotesWidget()));
   } else {
     ScaffoldMessenger.of(context)
@@ -37,7 +37,7 @@ class _LoginWidgetState extends State<LoginWidget> {
 
 Future<void> _handleResponse(bool success) async {
   if (success) {
-    await Navigator.pushReplacement(
+    await Navigator.pushReplacement<void, void>(
         context, MaterialPageRoute(builder: (_) => const GroupNotesWidget()));
   } else {
     ScaffoldMessenger.of(context)

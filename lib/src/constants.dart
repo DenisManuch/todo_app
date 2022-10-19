@@ -7,10 +7,10 @@ const whiteColor = Colors.white;
 const darkGreyColor = Color(0xFF909090);
 const greyColor = Color(0xFFECECEC);
 const lightGrey = Color(0xFFF6F6F6);
-Color textColor = Colors.black;
-Color iconColor = Colors.black;
+Color textColorK = Colors.black;
+Color iconColorK = Colors.black;
 
-List<Color> colorPallete = [
+const List<Color> colorPallete = [
   Colors.white,
   Colors.red,
   Colors.orange,
@@ -22,6 +22,7 @@ List<Color> colorPallete = [
   Colors.grey,
 ];
 
+///
 class Note {
   final int id;
   final String title;
@@ -30,20 +31,25 @@ class Note {
   final DateTime modifyTime;
   final int colorNote;
 
+///
   Note(this.id, this.title, this.content, this.createTime, this.modifyTime,
       this.colorNote);  
 
   @override
   String toString() {
+    // ignore: lines_longer_than_80_chars
     return 'Note{id: $id, title: $title, content: $content, createTime: $createTime, modifyTime: $modifyTime, color_note: $colorNote,}';
   }
 }
 
+///
 class Todo {
+  ///
   final int id;
-   bool check;
+  bool check;
   final String task;
 
+///
   Todo(this.id,this.check,this.task);
 
   @override
@@ -51,7 +57,8 @@ class Todo {
     return 'Todo{id: $id, task: $task, check: $check}';
   }
 
-  Map<String, dynamic> toJson() => {
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
     "id": id,
     "check": check,
     "task": task,
