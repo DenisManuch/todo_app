@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:flutter/material.dart';
 import 'package:todo_app/src/constants.dart';
 import 'package:todo_app/src/supabase_manager.dart';
@@ -43,7 +45,6 @@ class _NotePageState extends State<NotePage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -96,7 +97,7 @@ class _NotePageState extends State<NotePage> {
                                         Icons.delete,
                                         color: _colText,
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 30,
                                       ),
                                       Text(
@@ -123,7 +124,7 @@ class _NotePageState extends State<NotePage> {
                                         Icons.delete,
                                         color: _colText,
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 30,
                                       ),
                                       Text(
@@ -138,7 +139,7 @@ class _NotePageState extends State<NotePage> {
                                 height: 15,
                               ),
                               InkWell(
-                                onTap: (() => print('dddd')),
+                                onTap: (() {}),
                                 child: SizedBox(
                                   height: 30,
                                   child: Row(
@@ -150,11 +151,11 @@ class _NotePageState extends State<NotePage> {
                                         Icons.delete,
                                         color: _colText,
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 30,
                                       ),
                                       Text(
-                                        'Delete note',
+                                        'Clear all tasks',
                                         style: TextStyle(color: _colText),
                                       )
                                     ],
@@ -207,33 +208,36 @@ class _NotePageState extends State<NotePage> {
                 },
                 child: Row(
                   children: [
-                    Checkbox(
-                      value: _tasks[index].check,
-                      onChanged: (bool? value) {
-                        _tasks[index].check = value!;
-                        Services.of(context).notesService.updateTaskById(
-                              _tasks[index].id,
-                              _tasks[index].check,
-                            );
-                        setState(() {
-                          _getTask();
-                        });
-                      },
-                    ),
                     Expanded(
-                      child: Text(
-                        _tasks[index].task,
-                        style: TextStyle(
-                          fontSize: 20,
-                          decoration: _tasks[index].check
-                              ? TextDecoration.lineThrough
-                              : TextDecoration.none,
-                          color: _tasks[index].check
-                              ? _colText.withOpacity(0.5)
-                              : _colText,
+                      child: CheckboxListTile(
+                        checkColor: textColorK,
+                        activeColor: Colors.white60,
+                        title: Text(
+                          _tasks[index].task,
+                          style: TextStyle(
+                            fontSize: 20,
+                            decoration: _tasks[index].check
+                                ? TextDecoration.lineThrough
+                                : TextDecoration.none,
+                            color: _tasks[index].check
+                                ? _colText.withOpacity(0.5)
+                                : _colText,
+                          ),
                         ),
+                        controlAffinity: ListTileControlAffinity.leading,
+                        value: _tasks[index].check,
+                        onChanged: (bool? value) {
+                          _tasks[index].check = value!;
+                          Services.of(context).notesService.updateTaskById(
+                                _tasks[index].id,
+                                _tasks[index].check,
+                              );
+                          setState(() {
+                            _getTask();
+                          });
+                        },
                       ),
-                    ),
+                    )
                   ],
                 ),
               );

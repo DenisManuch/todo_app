@@ -1,13 +1,17 @@
+// ignore_for_file: avoid_dynamic_calls
+
 import 'package:flutter/material.dart';
 import 'package:supabase/supabase.dart';
 import 'package:todo_app/src/constants.dart';
 
+// ignore: public_member_api_docs
 class NotesService {
   static const notes = 'notes';
   static const todoList = 'todo_list';
 
   final SupabaseClient _client;
 
+  // ignore: public_member_api_docs
   NotesService(this._client);
 
   Future<List<Note>> getNotes() async {
@@ -20,11 +24,11 @@ class NotesService {
 
       return results.map((e) => toNote(e)).toList();
     }
-    debugPrint('Error geting notes: ${response.error!.message}');
+    debugPrint('Error geting notes: ${response.error?.message}');
 
     return [];
   }
-
+///
   Future<List<Note>> getNotesById(int taskId) async {
     final response = await _client
         .from(notes)
@@ -36,10 +40,10 @@ class NotesService {
 
       return results.map((e) => toNote(e)).toList();
     }
-    debugPrint('Error geting notes: ${response.error!.message}');
+    debugPrint('Error geting notes: ${response.error?.message}');
     return [];
   }
-
+///
   Future<List<Todo>> getTaskById(int taskId) async {
     final response = await _client
         .from(todoList)
@@ -52,11 +56,12 @@ class NotesService {
 
       return results.map((e) => toTask(e as Map<String, dynamic>)).toList();
     }
-    debugPrint('Error geting task: ${response.error!.message}');
+    debugPrint('Error geting task: ${response.error?.message}');
 
     return [];
   }
-
+///
+  // ignore: avoid_positional_boolean_parameters
   Future<Todo?> updateTaskById(int taskId, bool check) async {
     final response = await _client
         .from(todoList)
@@ -68,7 +73,7 @@ class NotesService {
 
     return null;
   }
-
+///
   Future<Todo?> createTask(String task, int noteId) async {
     final response = await _client
         .from(todoList)
@@ -78,21 +83,22 @@ class NotesService {
 
       return toTask(results.first as Map<String, dynamic>);
     }
-    debugPrint('Error creating note: ${response.error!.message}');
+    debugPrint('Error creating note: ${response.error?.message}');
     return null;
   }
 
+///
   Future<bool> deleteTask(int id) async {
     final response =
         await _client.from(todoList).delete().eq('id', id).execute();
     if (response.error == null) {
       return true;
     }
-    debugPrint('Error deleting taks: ${response.error!.message}');
+    debugPrint('Error deleting taks: ${response.error?.message}');
 
     return false;
   }
-
+///
   Future<Note?> createNote(String title, String? content, int color) async {
     final response = await _client.from(notes).insert(
         {'title': title, 'content': content, 'color_note': color}).execute();
@@ -101,13 +107,13 @@ class NotesService {
 
       return toNote(results[0]);
     }
-    debugPrint('Error creating note: ${response.error!.message}');
+    debugPrint('Error creating note: ${response.error?.message}');
 
     return null;
   }
-
+///
   Future<Note?> updateNote(
-      int id, String title, String? content, int color) async {
+      int id, String title, String? content, int color,) async {
     final response = await _client
         .from(notes)
         .update({
@@ -123,7 +129,8 @@ class NotesService {
 
       return toNote(results[0]);
     }
-    debugPrint('Error editing note: ${response.error!.message}');
+    debugPrint('Error editing note: ${response.error?.message}');
+
     return null;
   }
 
@@ -144,17 +151,18 @@ class NotesService {
   //   debugPrint('Error editing note: ${response.error!.message}');
   //   return null;
   // }
-
+///
   Future<bool> deleteNote(int id) async {
     final response = await _client.from(notes).delete().eq('id', id).execute();
     if (response.error == null) {
       return true;
     }
-    debugPrint('Error deleting note: ${response.error!.message}');
+    debugPrint('Error deleting note: ${response.error?.message}');
 
     return false;
   }
-
+///
+  // ignore: type_annotate_public_apis
   Note toNote(result) {
     return Note(
       int.parse(result['id'].toString()),
@@ -165,7 +173,7 @@ class NotesService {
       int.parse(result['color_note'].toString()),
     );
   }
-
+///
   Todo toTask(Map<String, dynamic> result) {
     return Todo(
       int.parse(result['id'].toString()),
