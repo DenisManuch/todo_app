@@ -134,14 +134,14 @@ class _NotePageState extends State<NotePage> {
                                       ),
                                       Icon(
                                         Icons.photo_outlined,
-                                        color: _colText,
+                                        color: _colText.withOpacity(0.5),
                                       ),
                                       const SizedBox(
                                         width: 30,
                                       ),
                                       Text(
                                         'Add image',
-                                        style: TextStyle(color: _colText),
+                                        style: TextStyle(color: _colText.withOpacity(0.5)),
                                       )
                                     ],
                                   ),
