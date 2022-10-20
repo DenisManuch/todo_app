@@ -7,7 +7,7 @@ import 'package:todo_app/src/constants.dart';
 // ignore: public_member_api_docs
 class NotesService {
   static const notes = 'notes';
-  static const todoList = 'todo_list';
+  static const todoList = 'tasks_list';
 
   final SupabaseClient _client;
 
@@ -47,7 +47,7 @@ class NotesService {
   Future<List<Todo>> getTaskById(int taskId) async {
     final response = await _client
         .from(todoList)
-        .select('id, task, check, note_id')
+        .select()
         .eq('note_id', taskId)
         .order('id', ascending: true)
         .execute();
@@ -66,7 +66,7 @@ class NotesService {
     final response = await _client
         .from(todoList)
         .update({
-          'check': check,
+          'check_task': check,
         })
         .eq('id', taskId)
         .execute();
@@ -77,7 +77,7 @@ class NotesService {
   Future<Todo?> createTask(String task, int noteId) async {
     final response = await _client
         .from(todoList)
-        .insert({'task': task, 'note_id': noteId}).execute();
+        .insert({'text': task, 'note_id': noteId}).execute();
     if (response.error == null) {
       final results = response.data as List<dynamic>;
 
@@ -177,8 +177,8 @@ class NotesService {
   Todo toTask(Map<String, dynamic> result) {
     return Todo(
       int.parse(result['id'].toString()),
-      result['check'] as bool,
-      result['task'].toString(),
+      result['check_task'] as bool,
+      result['text'].toString(),
     );
   }
 }

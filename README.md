@@ -1,16 +1,10 @@
-# todo_app
+# Todo app [![style: solid](https://img.shields.io/badge/style-solid-orange)](https://pub.dev/packages/solid_lints)
 
-A new Flutter project.
+This application is needed to control your goals and objectives.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Copi url - https://github.com/DenisManuch/todo_app
+2. Create new git in your folder and clone this project
+3. Control your life
+4. Enjoi

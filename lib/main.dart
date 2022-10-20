@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:flutter/material.dart';
 import 'package:todo_app/screens/group_notes_widget.dart';
 import 'package:todo_app/screens/login_screen.dart';
@@ -5,11 +7,11 @@ import 'package:todo_app/src/constants.dart';
 import 'package:todo_app/src/supabase_manager.dart';
 
 void main() {
-  runApp(const App());
+  runApp(const Main());
 }
 
-class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+class Main extends StatelessWidget {
+  const Main({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,7 @@ class App extends StatelessWidget {
               future: Services.of(context).authService.recoverSession(),
               builder: (context, snapshot) {
                 final sessionRecovered = snapshot.data ?? false;
+                
                 return sessionRecovered
                     ? const GroupNotesWidget()
                     : const LoginWidget();

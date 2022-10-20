@@ -35,8 +35,8 @@ class _EditNotePageState extends State<EditNotePage> {
   Future<Note?> _createOrUpdateNote(String title, String content) {
     final notesService = Services.of(context).notesService;
     if (widget.note != null) {
-      
-      return notesService.updateNote(widget.note!.id, title, content, _colorTap);
+      return notesService.updateNote(
+          widget.note!.id, title, content, _colorTap);
     } else {
       return notesService.createNote(title, content, _colorTap);
     }
@@ -65,53 +65,93 @@ class _EditNotePageState extends State<EditNotePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        title: Text(widget.note != null ? 'Edit note' : 'New note'),
+        backgroundColor: primaryColor,
+        title: Text(
+          widget.note != null ? 'Edit note' : 'New note',
+        ),
       ),
       body: Column(
         children: <Widget>[
-          const SizedBox(height: 20,),
+          const SizedBox(
+            height: 20,
+          ),
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: TextFormField(
+              maxLength: 50,
+              autofocus: true,
+              style: const TextStyle(color: whiteColor),
               controller: _titleController,
               validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please, enter some text';
-                                }
-                                return null;
-                              },
-              decoration: const InputDecoration(hintText: 'Title'),
+                if (value == null || value.isEmpty) {
+                  return 'Please, enter some text';
+                }
+
+                return null;
+              },
+              decoration: const InputDecoration(
+                counterStyle: TextStyle(color: whiteColor),
+                hintText: 'Title',
+                hintStyle: TextStyle(color: whiteColor),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: whiteColor),
+                ),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: whiteColor),
+                ),
+              ),
             ),
           ),
-          const SizedBox(height: 20,),
+          const SizedBox(
+            height: 20,
+          ),
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: TextFormField(
+              maxLength: 100,
+              maxLines: 5,
+              minLines: 1,
+              style: const TextStyle(color: whiteColor),
               controller: _contentController,
               validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please, enter some text';
-                                }
-                                return null;
-                              },
-              decoration: const InputDecoration(hintText: 'Description'),
+                if (value == null || value.isEmpty) {
+                  return 'Please, enter some text';
+                }
+
+                return null;
+              },
+              decoration: const InputDecoration(
+                counterStyle: TextStyle(color: whiteColor),
+                hintText: 'Description',
+                hintStyle: TextStyle(color: whiteColor),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: whiteColor),
+                ),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: whiteColor),
+                ),
+              ),
             ),
           ),
           SizedBox(
             height: 100,
             child: Expanded(
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: colorPallete.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                          onTap: () {
-                            _colorTap = index;
-                             setState(() {});
-                          },
-                          child: circle(index, _colorTap),);
-                    },),),
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: colorPallete.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      _colorTap = index;
+                      setState(() {});
+                    },
+                    child: circle(index, _colorTap),
+                  );
+                },
+              ),
+            ),
           ),
         ],
       ),
@@ -128,6 +168,7 @@ class _EditNotePageState extends State<EditNotePage> {
     if (widget.note != null) {
       _titleController.text = widget.note!.title;
       _contentController.text = widget.note!.content ?? '';
+      _colorTap = widget.note!.colorNote ?? 0;
     }
   }
 

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:todo_app/src/constants.dart';
 import 'package:todo_app/src/supabase_manager.dart';
 
+import 'edit_page.dart';
+
 class NotePage extends StatefulWidget {
   final Note? note;
 
@@ -14,6 +16,8 @@ class NotePage extends StatefulWidget {
 
 class _NotePageState extends State<NotePage> {
   Color _colText = textColorK;
+  List<Todo> testList = [];
+  //late Future<List<Todo>> allTodo;
   @override
   void initState() {
     _colText = _updateColor();
@@ -22,10 +26,9 @@ class _NotePageState extends State<NotePage> {
   }
 
   Future<List<Todo>> _getTask() async {
-    final dataTasks =
+    final _dataTasks =
         Services.of(context).notesService.getTaskById(widget.note!.id);
-
-    return dataTasks;
+    return _dataTasks;
   }
 
   Color _updateColor() {
@@ -60,11 +63,12 @@ class _NotePageState extends State<NotePage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
-                color: _colText,
-                onPressed: () {
-                  _inputDialog(context);
-                },
-                icon: const Icon(Icons.add_box_outlined)),
+              color: _colText,
+              onPressed: () {
+                _inputDialog(context);
+              },
+              icon: const Icon(Icons.add_box_outlined),
+            ),
             Text(
               'Last changes: ${widget.note!.modifyTime.hour}:${widget.note!.modifyTime.minute}',
               style: TextStyle(color: _colText),
@@ -85,7 +89,15 @@ class _NotePageState extends State<NotePage> {
                                 height: 15,
                               ),
                               InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.push<Note?>(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => EditNotePage(
+                                              note: widget.note,
+                                            )),
+                                  );
+                                },
                                 child: SizedBox(
                                   height: 30,
                                   child: Row(
@@ -94,14 +106,14 @@ class _NotePageState extends State<NotePage> {
                                         width: 15,
                                       ),
                                       Icon(
-                                        Icons.delete,
+                                        Icons.note_alt_outlined,
                                         color: _colText,
                                       ),
                                       const SizedBox(
                                         width: 30,
                                       ),
                                       Text(
-                                        'Delete note',
+                                        'Edit note',
                                         style: TextStyle(color: _colText),
                                       )
                                     ],
@@ -112,7 +124,7 @@ class _NotePageState extends State<NotePage> {
                                 height: 15,
                               ),
                               InkWell(
-                                onTap: (() => print('dddd')),
+                               // onTap: (() => print('dddd')),
                                 child: SizedBox(
                                   height: 30,
                                   child: Row(
@@ -121,14 +133,14 @@ class _NotePageState extends State<NotePage> {
                                         width: 15,
                                       ),
                                       Icon(
-                                        Icons.delete,
+                                        Icons.photo_outlined,
                                         color: _colText,
                                       ),
                                       const SizedBox(
                                         width: 30,
                                       ),
                                       Text(
-                                        'Delete note',
+                                        'Add image',
                                         style: TextStyle(color: _colText),
                                       )
                                     ],
@@ -139,7 +151,16 @@ class _NotePageState extends State<NotePage> {
                                 height: 15,
                               ),
                               InkWell(
-                                onTap: (() {}),
+                                onTap: () {
+                                  for (int i = 0; i < testList.length; i++) {
+                                    Services.of(context)
+                                        .notesService
+                                        .deleteTask(testList[i].id);
+                                    _getTask();
+                                  }
+                                  Navigator.pop(context);
+                                  setState(() {});
+                                },
                                 child: SizedBox(
                                   height: 30,
                                   child: Row(
@@ -195,6 +216,7 @@ class _NotePageState extends State<NotePage> {
       future: _getTask(),
       builder: (context, snaphot) {
         final _tasks = snaphot.data ?? [];
+        testList = _tasks;
         if (snaphot.hasData) {
           return ListView.builder(
             itemCount: _tasks.length,
