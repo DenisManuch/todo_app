@@ -16,8 +16,7 @@ class NotePage extends StatefulWidget {
 
 class _NotePageState extends State<NotePage> {
   Color _colText = textColorK;
-  List<Todo> testList = [];
-  //late Future<List<Todo>> allTodo;
+  List<Todo> taskList = [];
   @override
   void initState() {
     _colText = _updateColor();
@@ -28,6 +27,7 @@ class _NotePageState extends State<NotePage> {
   Future<List<Todo>> _getTask() async {
     final _dataTasks =
         Services.of(context).notesService.getTaskById(widget.note!.id);
+
     return _dataTasks;
   }
 
@@ -93,9 +93,10 @@ class _NotePageState extends State<NotePage> {
                                   Navigator.push<Note?>(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => EditNotePage(
-                                              note: widget.note,
-                                            )),
+                                      builder: (context) => EditNotePage(
+                                        note: widget.note,
+                                      ),
+                                    ),
                                   );
                                 },
                                 child: SizedBox(
@@ -124,7 +125,7 @@ class _NotePageState extends State<NotePage> {
                                 height: 15,
                               ),
                               InkWell(
-                               // onTap: (() => print('dddd')),
+                                // onTap: (() => print('dddd')),
                                 child: SizedBox(
                                   height: 30,
                                   child: Row(
@@ -141,7 +142,8 @@ class _NotePageState extends State<NotePage> {
                                       ),
                                       Text(
                                         'Add image',
-                                        style: TextStyle(color: _colText.withOpacity(0.5)),
+                                        style: TextStyle(
+                                            color: _colText.withOpacity(0.5)),
                                       )
                                     ],
                                   ),
@@ -152,10 +154,10 @@ class _NotePageState extends State<NotePage> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  for (int i = 0; i < testList.length; i++) {
+                                  for (int i = 0; i < taskList.length; i++) {
                                     Services.of(context)
                                         .notesService
-                                        .deleteTask(testList[i].id);
+                                        .deleteTask(taskList[i].id);
                                     _getTask();
                                   }
                                   Navigator.pop(context);
@@ -216,12 +218,32 @@ class _NotePageState extends State<NotePage> {
       future: _getTask(),
       builder: (context, snaphot) {
         final _tasks = snaphot.data ?? [];
-        testList = _tasks;
+        taskList = _tasks;
         if (snaphot.hasData) {
           return ListView.builder(
             itemCount: _tasks.length,
             itemBuilder: (context, index) {
               return GestureDetector(
+                onHorizontalDragEnd: (vert) {
+                  if (_tasks[index].check) {
+                    _tasks[index].check = false;
+                    Services.of(context).notesService.updateTaskById(
+                                _tasks[index].id,
+                                _tasks[index].check,
+                              );
+                  } else {
+                    _tasks[index].check = true;
+                    Services.of(context).notesService.updateTaskById(
+                                _tasks[index].id,
+                                _tasks[index].check,
+                              );
+                  }
+                  Future.delayed(const Duration(milliseconds: 200), () {
+                            setState(() {
+                              _getTask();
+                            });
+                          });
+                },
                 onLongPress: () {
                   Services.of(context)
                       .notesService
@@ -254,9 +276,14 @@ class _NotePageState extends State<NotePage> {
                                 _tasks[index].id,
                                 _tasks[index].check,
                               );
-                          setState(() {
-                            _getTask();
+                          Future.delayed(const Duration(milliseconds: 200), () {
+                            setState(() {
+                              _getTask();
+                            });
                           });
+                          // setState(() {
+                          //   _getTask();
+                          // });
                         },
                       ),
                     )
@@ -322,10 +349,16 @@ class _NotePageState extends State<NotePage> {
                       .notesService
                       .createTask(taskStr, widget.note!.id);
                 }
-                setState(() {
-                  Navigator.of(context).pop();
-                  _getTask();
-                });
+                // setState(() {
+                //   Navigator.of(context).pop();
+                //   _getTask();
+                // });
+                Future.delayed(const Duration(milliseconds: 200), () {
+                            setState(() {
+                              _getTask();
+                            });
+                          });
+                Navigator.of(context).pop();
               },
             ),
           ],
