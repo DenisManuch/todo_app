@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:todo_app/screens/detail_page.dart';
 import 'package:todo_app/screens/edit_page.dart';
@@ -16,7 +18,6 @@ class _GroupNotesWidgetState extends State<GroupNotesWidget> {
   Future<void> _signOut() async {
     final success = await Services.of(context).authService.signOut();
     if (success) {
-      // ignore: use_build_context_synchronously
       await Navigator.pushReplacement<void, void>(
           context, MaterialPageRoute(builder: (_) => const LoginWidget()),);
     } else {
@@ -56,8 +57,7 @@ class _GroupNotesWidgetState extends State<GroupNotesWidget> {
   }
 
   void refresh() {
-    setState(() {
-    });
+    setState(() {});
   }
 
   @override

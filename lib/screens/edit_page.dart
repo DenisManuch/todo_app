@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:flutter/material.dart';
 
 import 'package:todo_app/src/constants.dart';
@@ -22,6 +24,7 @@ class _EditNotePageState extends State<EditNotePage> {
     final content = _contentController.text;
     if (title.isEmpty) {
       _showSnackBar('Title cannot be empty.');
+
       return;
     }
     final note = await _createOrUpdateNote(title, content);
@@ -34,12 +37,10 @@ class _EditNotePageState extends State<EditNotePage> {
 
   Future<Note?> _createOrUpdateNote(String title, String content) {
     final notesService = Services.of(context).notesService;
-    if (widget.note != null) {
-      return notesService.updateNote(
-          widget.note!.id, title, content, _colorTap);
-    } else {
-      return notesService.createNote(title, content, _colorTap);
-    }
+    
+    return widget.note != null
+        ? notesService.updateNote(widget.note!.id, title, content, _colorTap)
+        : notesService.createNote(title, content, _colorTap);
   }
 
   void _showSnackBar(String text) {

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:todo_app/screens/group_notes_widget.dart';
 import 'package:todo_app/src/supabase_manager.dart';
@@ -21,7 +23,7 @@ class _LoginWidgetState extends State<LoginWidget> {
       .signUp(_emailController.text, _passwordController.text);
   if (success) {
     await Navigator.pushReplacement<void, void>(
-        context, MaterialPageRoute(builder: (_) => const GroupNotesWidget()));
+        context, MaterialPageRoute(builder: (_) => const GroupNotesWidget()),);
   } else {
     ScaffoldMessenger.of(context)
         .showSnackBar(const SnackBar(content: Text('Something went wrong.')));
@@ -50,7 +52,7 @@ Future<void> _handleResponse(bool success) async {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title: const Text('To do app'),
+        title: const Text('Todo app'),
       ),
       
       body: Center(
