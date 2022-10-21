@@ -82,7 +82,7 @@ class _NotePageState extends State<NotePage> {
                       context: context,
                       builder: (BuildContext context) {
                         return Container(
-                          height: MediaQuery.of(context).size.height * 0.17,
+                          height: 150,
                           child: Column(
                             children: [
                               const SizedBox(
@@ -331,7 +331,7 @@ class _NotePageState extends State<NotePage> {
                     labelText: 'Print new task',
                   ),
                   onChanged: (value) {
-                    taskStr = value;
+                    taskStr = value.trim();
                   },
                 ),
               )
