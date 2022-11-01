@@ -1,12 +1,15 @@
-// ignore_for_file: avoid_dynamic_calls
+// ignore_for_file: avoid_dynamic_calls, unused_local_variable
 
 import 'package:flutter/material.dart';
-import 'package:supabase/supabase.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo_app/src/constants.dart';
 
-// ignore: public_member_api_docs
+///
 class NotesService {
+  ///
   static const notes = 'notes';
+
+  ///
   static const todoList = 'tasks_list';
 
   final SupabaseClient _client;
@@ -14,6 +17,7 @@ class NotesService {
   // ignore: public_member_api_docs
   NotesService(this._client);
 
+  ///
   Future<List<Note>> getNotes() async {
     final response = await _client
         .from(notes)
@@ -28,7 +32,8 @@ class NotesService {
 
     return [];
   }
-///
+
+  ///
   Future<List<Note>> getNotesById(int taskId) async {
     final response = await _client
         .from(notes)
@@ -41,9 +46,11 @@ class NotesService {
       return results.map((e) => toNote(e)).toList();
     }
     debugPrint('Error geting notes: ${response.error?.message}');
+
     return [];
   }
-///
+
+  ///
   Future<List<Todo>> getTaskById(int taskId) async {
     final response = await _client
         .from(todoList)
@@ -60,7 +67,8 @@ class NotesService {
 
     return [];
   }
-///
+
+  ///
   // ignore: avoid_positional_boolean_parameters
   Future<Todo?> updateTaskById(int taskId, bool check) async {
     final response = await _client
@@ -73,7 +81,8 @@ class NotesService {
 
     return null;
   }
-///
+
+  ///
   Future<Todo?> createTask(String task, int noteId) async {
     final response = await _client
         .from(todoList)
@@ -84,10 +93,11 @@ class NotesService {
       return toTask(results.first as Map<String, dynamic>);
     }
     debugPrint('Error creating note: ${response.error?.message}');
+
     return null;
   }
 
-///
+  ///
   Future<bool> deleteTask(int id) async {
     final response =
         await _client.from(todoList).delete().eq('id', id).execute();
@@ -98,22 +108,29 @@ class NotesService {
 
     return false;
   }
-///
+
+  ///
   Future<Note?> createNote(String title, String? content, int color) async {
     final response = await _client.from(notes).insert(
-        {'title': title, 'content': content, 'color_note': color}).execute();
+      {'title': title, 'content': content, 'color_note': color},
+    ).execute();
     if (response.error == null) {
       final results = response.data as List<dynamic>;
 
-      return toNote(results[0]);
+      return toNote(results.first);
     }
     debugPrint('Error creating note: ${response.error?.message}');
 
     return null;
   }
-///
+
+  ///
   Future<Note?> updateNote(
-      int id, String title, String? content, int color,) async {
+    int id,
+    String title,
+    String? content,
+    int color,
+  ) async {
     final response = await _client
         .from(notes)
         .update({
@@ -127,31 +144,14 @@ class NotesService {
     if (response.error == null) {
       final results = response.data as List<dynamic>;
 
-      return toNote(results[0]);
+      return toNote(results.first);
     }
     debugPrint('Error editing note: ${response.error?.message}');
 
     return null;
   }
 
-  // Future<Note?> updateNoteModifyTime(
-  //     int id) async {
-  //   final response = await _client
-  //       .from(notes)
-  //       .update({
-  //         'modify_time': 'now()'
-  //       })
-  //       .eq('id', id)
-  //       .execute();
-  //   if (response.error == null) {
-  //     final results = response.data as List<dynamic>;
-
-  //     return toNote(results[0]);
-  //   }
-  //   debugPrint('Error editing note: ${response.error!.message}');
-  //   return null;
-  // }
-///
+  ///
   Future<bool> deleteNote(int id) async {
     final response = await _client.from(notes).delete().eq('id', id).execute();
     if (response.error == null) {
@@ -161,7 +161,8 @@ class NotesService {
 
     return false;
   }
-///
+
+  ///
   // ignore: type_annotate_public_apis
   Note toNote(result) {
     return Note(
@@ -173,7 +174,8 @@ class NotesService {
       int.parse(result['color_note'].toString()),
     );
   }
-///
+
+  ///
   Todo toTask(Map<String, dynamic> result) {
     return Todo(
       int.parse(result['id'].toString()),
@@ -182,3 +184,19 @@ class NotesService {
     );
   }
 }
+
+// ///
+// class DataClass extends ChangeNotifier {
+//   ///
+//   List? post;
+//   bool loading = false;
+
+//   ///
+//   ///
+//   ///
+//   getNotesData() async {
+//     loading = true;
+//     post = await getNotes();
+//     loading = false;
+//   }
+// }

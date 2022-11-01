@@ -1,12 +1,12 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, avoid_void_async
 
 import 'package:flutter/material.dart';
 import 'package:todo_app/screens/group_notes_widget.dart';
 import 'package:todo_app/src/supabase_manager.dart';
 
-
-
+///
 class LoginWidget extends StatefulWidget {
+  ///
   const LoginWidget();
 
   @override
@@ -17,35 +17,40 @@ class _LoginWidgetState extends State<LoginWidget> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  ///
   void _signUp() async {
-  final success = await Services.of(context)
-      .authService
-      .signUp(_emailController.text, _passwordController.text);
-  if (success) {
-    await Navigator.pushReplacement<void, void>(
-        context, MaterialPageRoute(builder: (_) => const GroupNotesWidget()),);
-  } else {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Something went wrong.')));
+    final success = await Services.of(context)
+        .authService
+        .signUp(_emailController.text, _passwordController.text);
+    if (success) {
+      await Navigator.pushReplacement<void, void>(
+        context,
+        MaterialPageRoute(builder: (_) => const GroupNotesWidget()),
+      );
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Something went wrong.')));
+    }
   }
-}
 
   void _signIn() async {
-  final success = await Services.of(context)
-      .authService
-      .signIn(_emailController.text, _passwordController.text);
-  await _handleResponse(success);
-}
-
-Future<void> _handleResponse(bool success) async {
-  if (success) {
-    await Navigator.pushReplacement<void, void>(
-        context, MaterialPageRoute(builder: (_) => const GroupNotesWidget()));
-  } else {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Something went wrong.')));
+    final success = await Services.of(context)
+        .authService
+        .signIn(_emailController.text, _passwordController.text);
+    await _handleResponse(success);
   }
-}
+
+  Future<void> _handleResponse(bool success) async {
+    if (success) {
+      await Navigator.pushReplacement<void, void>(
+        context,
+        MaterialPageRoute(builder: (_) => const GroupNotesWidget()),
+      );
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Something went wrong.')));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +59,6 @@ Future<void> _handleResponse(bool success) async {
         backgroundColor: Theme.of(context).primaryColor,
         title: const Text('Todo app'),
       ),
-      
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -80,7 +84,9 @@ Future<void> _handleResponse(bool success) async {
               icon: const Icon(Icons.login),
               label: const Text('Sign in'),
             ),
-            const SizedBox(height: 15,),
+            const SizedBox(
+              height: 15,
+            ),
             ElevatedButton.icon(
               onPressed: _signUp,
               icon: const Icon(Icons.app_registration),

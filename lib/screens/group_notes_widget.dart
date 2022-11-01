@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:todo_app/screens/detail_page.dart';
-import 'package:todo_app/screens/edit_page.dart';
-import 'package:todo_app/screens/login_screen.dart';
+import 'package:todo_app/screens/edit_note_page.dart';
+import 'package:todo_app/screens/login_widget.dart';
 import 'package:todo_app/src/constants.dart';
 import 'package:todo_app/src/supabase_manager.dart';
 
@@ -19,10 +19,15 @@ class _GroupNotesWidgetState extends State<GroupNotesWidget> {
     final success = await Services.of(context).authService.signOut();
     if (success) {
       await Navigator.pushReplacement<void, void>(
-          context, MaterialPageRoute(builder: (_) => const LoginWidget()),);
+        context,
+        MaterialPageRoute(builder: (_) => const LoginWidget()),
+      );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('There was an issue logging out.')));
+        const SnackBar(
+          content: Text('There was an issue logging out.'),
+        ),
+      );
     }
   }
 
@@ -32,6 +37,7 @@ class _GroupNotesWidgetState extends State<GroupNotesWidget> {
       MaterialPageRoute(builder: (context) => const EditNotePage()),
     );
     if (note != null) {
+      // ignore: no-empty-block
       setState(() {});
     }
   }
@@ -42,6 +48,7 @@ class _GroupNotesWidgetState extends State<GroupNotesWidget> {
       MaterialPageRoute(builder: (context) => EditNotePage(note: note)),
     );
     if (updatedNote != null) {
+      // ignore: no-empty-block
       setState(() {});
     }
   }
@@ -49,14 +56,16 @@ class _GroupNotesWidgetState extends State<GroupNotesWidget> {
   Future<void> _detailNote(Note note) async {
     final updatedNote = await Navigator.push<Note?>(
       context,
-      MaterialPageRoute(builder: (context) => NotePage(note: note)),
+      MaterialPageRoute(builder: (context) => DetailPage(note: note)),
     );
     if (updatedNote != null) {
+      // ignore: no-empty-block
       setState(() {});
     }
   }
 
   void refresh() {
+    // ignore: no-empty-block
     setState(() {});
   }
 
@@ -68,8 +77,13 @@ class _GroupNotesWidgetState extends State<GroupNotesWidget> {
         backgroundColor: primaryColor,
         title: const Text('List of notes'),
         actions: [
-          IconButton(onPressed: refresh, icon: const Icon(Icons.refresh)),
-          _logOutButton(context)
+          IconButton(
+              onPressed: () {
+                //context.read<ProviderData>().getNotesData();
+                refresh();
+              },
+              icon: const Icon(Icons.refresh),),
+          _logOutButton()
         ],
       ),
       body: ListView(
@@ -83,9 +97,11 @@ class _GroupNotesWidgetState extends State<GroupNotesWidget> {
                 );
               }
               final notes = (snapshot.data ?? [])
-                ..sort((x, y) =>
-                    y.modifyTime.difference(x.modifyTime).inMilliseconds,); 
-                                 
+                ..sort(
+                  (x, y) =>
+                      y.modifyTime.difference(x.modifyTime).inMilliseconds,
+                );
+
               return Column(
                 children: notes.map(_toNoteWidget).toList(),
               );
@@ -101,7 +117,7 @@ class _GroupNotesWidgetState extends State<GroupNotesWidget> {
     );
   }
 
-  Widget _logOutButton(BuildContext context) {
+  Widget _logOutButton() {
     return IconButton(
       onPressed: _signOut,
       icon: const Icon(Icons.logout),
@@ -114,6 +130,7 @@ class _GroupNotesWidgetState extends State<GroupNotesWidget> {
       direction: DismissDirection.endToStart,
       confirmDismiss: (_) =>
           Services.of(context).notesService.deleteNote(note.id),
+      // ignore: no-empty-block
       onDismissed: (_) => setState(() {}),
       background: Container(
         padding: const EdgeInsets.all(16.0),

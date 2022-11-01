@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs
+// ignore_for_file: public_member_api_docs, lines_longer_than_80_chars
 
 import 'package:flutter/material.dart';
 
@@ -29,6 +29,7 @@ class _EditNotePageState extends State<EditNotePage> {
     }
     final note = await _createOrUpdateNote(title, content);
     if (note != null) {
+      // ignore: use_build_context_synchronously
       Navigator.pop(context, note);
     } else {
       _showSnackBar('Something went wrong.');
@@ -37,9 +38,9 @@ class _EditNotePageState extends State<EditNotePage> {
 
   Future<Note?> _createOrUpdateNote(String title, String content) {
     final notesService = Services.of(context).notesService;
-    
+
     return widget.note != null
-        ? notesService.updateNote(widget.note!.id, title, content, _colorTap)
+        ? notesService.updateNote(widget.note?.id ?? 0, title, content, _colorTap)
         : notesService.createNote(title, content, _colorTap);
   }
 
@@ -146,6 +147,7 @@ class _EditNotePageState extends State<EditNotePage> {
                   return GestureDetector(
                     onTap: () {
                       _colorTap = index;
+                      // ignore: no-empty-block
                       setState(() {});
                     },
                     child: circle(index, _colorTap),
@@ -167,9 +169,9 @@ class _EditNotePageState extends State<EditNotePage> {
   void initState() {
     super.initState();
     if (widget.note != null) {
-      _titleController.text = widget.note!.title;
-      _contentController.text = widget.note!.content ?? '';
-      _colorTap = widget.note!.colorNote ?? 0;
+      _titleController.text = widget.note?.title ?? 'title';
+      _contentController.text = widget.note?.content ?? '';
+      _colorTap = widget.note?.colorNote ?? 0;
     }
   }
 
