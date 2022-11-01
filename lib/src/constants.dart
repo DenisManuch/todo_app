@@ -42,8 +42,12 @@ const List<Color> colorPallete = [
 
 ///
 const double sizedBoxHeight = 30.0;
+
 ///
 const double textOpacity = 0.5;
+
+///
+const double sizedBoxHeightModal = 150.0;
 
 ///
 class Note {

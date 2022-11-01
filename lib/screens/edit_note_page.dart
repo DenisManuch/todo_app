@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:todo_app/src/constants.dart';
-import 'package:todo_app/src/supabase_manager.dart';
+import 'package:todo_app/src/services.dart';
 
 class EditNotePage extends StatefulWidget {
   final Note? note;

@@ -40,9 +40,11 @@ dependencies:
   
 
 dev_dependencies:
+  flutter_dotenv: ^5.0.2
   flutter_test:
-    sdk: flutter
+    sdk: flutter 
   solid_lints: 0.0.12
+  
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -61,6 +63,8 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+  - .env
 
   # To add assets to your application, add an assets section, like this:
   # assets:

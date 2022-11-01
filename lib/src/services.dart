@@ -4,9 +4,11 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo_app/api/api_key.dart';
 import 'package:todo_app/src/notes_service.dart';
 
-
+///
 class Services extends InheritedWidget {
+  ///
   final AuthService authService;
+  ///
   final NotesService notesService;
 
   // ignore: public_member_api_docs
@@ -32,7 +34,7 @@ class Services extends InheritedWidget {
   bool updateShouldNotify(InheritedWidget oldWidget) {
     return false;
   }
-
+///
   static Services of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<Services>()!;
   }
@@ -41,6 +43,7 @@ class Services extends InheritedWidget {
 
 ///
 class AuthService {
+  ///
   static const supabaseSessionKey = 'supabase_session';
 
   final GoTrueClient _client;

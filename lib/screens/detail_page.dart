@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/screens/edit_note_page.dart';
 import 'package:todo_app/src/constants.dart';
-import 'package:todo_app/src/supabase_manager.dart';
+import 'package:todo_app/src/services.dart';
 
 class DetailPage extends StatefulWidget {
   final Note? note;
@@ -112,7 +112,7 @@ class _DetailPageState extends State<DetailPage> {
                       context: context,
                       builder: (BuildContext context) {
                         return SizedBox(
-                          height: 150,
+                          height: sizedBoxHeightModal,
                           child: Column(
                             children: [
                               const SizedBox(

@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:todo_app/screens/group_notes_widget.dart';
-import 'package:todo_app/src/supabase_manager.dart';
+import 'package:todo_app/src/services.dart';
 
 ///
 class LoginWidget extends StatefulWidget {

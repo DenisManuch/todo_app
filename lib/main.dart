@@ -1,15 +1,17 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/screens/group_notes_widget.dart';
 import 'package:todo_app/screens/login_widget.dart';
 import 'package:todo_app/src/constants.dart';
 import 'package:todo_app/src/provider/provider_data.dart';
-import 'package:todo_app/src/supabase_manager.dart';
+import 'package:todo_app/src/services.dart';
 
 Future<void> main() async {
-  
+  await dotenv.load(fileName: ".env");
   runApp(const Main());
 }
 
