@@ -1,5 +1,3 @@
-// ignore_for_file: public_member_api_docs, avoid_dynamic_calls, lines_longer_than_80_chars
-
 import 'package:flutter/material.dart';
 import 'package:todo_app/screens/edit_note_page.dart';
 import 'package:todo_app/src/constants.dart';
@@ -123,7 +121,6 @@ class _DetailPageState extends State<DetailPage> {
                             height: 15,
                           ),
                           InkWell(
-                            // onTap: (() => print('dddd')),
                             child: SizedBox(
                               height: sizedBoxHeight,
                               child: Row(
@@ -157,7 +154,6 @@ class _DetailPageState extends State<DetailPage> {
                                 Services.of(context)
                                     .notesService
                                     .deleteTask(taskList[i].id);
-                                // _getTask();
                               }
                               Navigator.pop(context);
                               // ignore: no-empty-block
@@ -284,9 +280,11 @@ class _DetailPageState extends State<DetailPage> {
     super.dispose();
   }
 }
-
+///
 class CheckBox extends StatefulWidget {
+///
   final Note note;
+///
   const CheckBox({Key? key, required this.note}) : super(key: key);
 
   @override
@@ -381,7 +379,7 @@ class _CheckBoxState extends State<CheckBox> {
                         controlAffinity: ListTileControlAffinity.leading,
                         value: _tasks[index].check,
                         onChanged: (bool? value) {
-                          _tasks[index].check = value!;
+                          _tasks[index].check = value ?? true;
                           Services.of(context).notesService.updateTaskById(
                                 _tasks[index].id,
                                 _tasks[index].check,

@@ -40,28 +40,13 @@ class _EditNotePageState extends State<EditNotePage> {
     final notesService = Services.of(context).notesService;
 
     return widget.note != null
-        ? notesService.updateNote(widget.note?.id ?? 0, title, content, _colorTap)
+        ? notesService.updateNote(
+            widget.note?.id ?? 0, title, content, _colorTap)
         : notesService.createNote(title, content, _colorTap);
   }
 
   void _showSnackBar(String text) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
-  }
-
-  Widget circle(int color, int circleTap) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        width: circleHeightK,
-        height: circleHeightK,
-        decoration: BoxDecoration(
-          color: colorPallete[color],
-          shape: BoxShape.circle,
-          border: Border.all(width: circleBorderK, color: Colors.black38),
-        ),
-        child: color == circleTap ? const Icon(Icons.done) : null,
-      ),
-    );
   }
 
   @override
@@ -86,13 +71,7 @@ class _EditNotePageState extends State<EditNotePage> {
               autofocus: true,
               style: const TextStyle(color: whiteColor),
               controller: _titleController,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please, enter some text';
-                }
-
-                return null;
-              },
+              //validator: (value) => _validator(value!),
               decoration: const InputDecoration(
                 counterStyle: TextStyle(color: whiteColor),
                 hintText: 'Title',
@@ -117,13 +96,13 @@ class _EditNotePageState extends State<EditNotePage> {
               minLines: 1,
               style: const TextStyle(color: whiteColor),
               controller: _contentController,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please, enter some text';
-                }
+              // validator: (value) {
+              //   if (value == null || value.isEmpty) {
+              //     return 'Please, enter some text';
+              //   }
 
-                return null;
-              },
+              //   return null;
+              // },
               decoration: const InputDecoration(
                 counterStyle: TextStyle(color: whiteColor),
                 hintText: 'Description',
@@ -150,7 +129,10 @@ class _EditNotePageState extends State<EditNotePage> {
                       // ignore: no-empty-block
                       setState(() {});
                     },
-                    child: circle(index, _colorTap),
+                    child: CircleTap(
+                      color: index,
+                      circleTap: _colorTap,
+                    ),
                   );
                 },
               ),
@@ -180,5 +162,29 @@ class _EditNotePageState extends State<EditNotePage> {
     _titleController.dispose();
     _contentController.dispose();
     super.dispose();
+  }
+}
+
+class CircleTap extends StatelessWidget {
+  final int color;
+  final int circleTap;
+  const CircleTap({Key? key, required this.color, required this.circleTap})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        width: circleHeightK,
+        height: circleHeightK,
+        decoration: BoxDecoration(
+          color: colorPallete[color],
+          shape: BoxShape.circle,
+          border: Border.all(width: circleBorderK, color: Colors.black38),
+        ),
+        child: color == circleTap ? const Icon(Icons.done) : null,
+      ),
+    );
   }
 }
