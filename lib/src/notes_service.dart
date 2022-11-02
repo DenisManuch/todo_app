@@ -26,7 +26,7 @@ class NotesService {
     if (response.error == null) {
       final results = response.data as List<dynamic>;
 
-      return results.map((e) => toNote(e)).toList();
+      return results.map((dynamic e) => toNote(e)).toList();
     }
     debugPrint('Error geting notes: ${response.error?.message}');
 
@@ -43,7 +43,7 @@ class NotesService {
     if (response.error == null) {
       final results = response.data as List<dynamic>;
 
-      return results.map((e) => toNote(e)).toList();
+      return results.map((dynamic e) => toNote(e)).toList();
     }
     debugPrint('Error geting notes: ${response.error?.message}');
 
@@ -61,7 +61,9 @@ class NotesService {
     if (response.error == null) {
       final results = response.data as List<dynamic>;
 
-      return results.map((e) => toTask(e as Map<String, dynamic>)).toList();
+      return results
+          .map((dynamic e) => toTask(e as Map<String, dynamic>))
+          .toList();
     }
     debugPrint('Error geting task: ${response.error?.message}');
 
@@ -73,7 +75,7 @@ class NotesService {
   Future<Todo?> updateTaskById(int taskId, bool check) async {
     final response = await _client
         .from(todoList)
-        .update({
+        .update(<String, dynamic>{
           'check_task': check,
         })
         .eq('id', taskId)
@@ -133,7 +135,7 @@ class NotesService {
   ) async {
     final response = await _client
         .from(notes)
-        .update({
+        .update(<String, dynamic>{
           'title': title,
           'content': content,
           'color_note': color,
@@ -164,7 +166,7 @@ class NotesService {
 
   ///
   // ignore: type_annotate_public_apis
-  Note toNote(result) {
+  Note toNote(dynamic result) {
     return Note(
       int.parse(result['id'].toString()),
       result['title'].toString(),

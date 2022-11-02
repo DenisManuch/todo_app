@@ -16,46 +16,15 @@ class DetailPage extends StatefulWidget {
 class _DetailPageState extends State<DetailPage> {
   Color _colText = textColorK;
   List<Todo> taskList = [];
-  //late Note test;
   @override
   void initState() {
     _colText = _updateColor();
-    //context.read<ProviderData>().listTaskProvider(widget.note!.id);
-    //_getTask();
-    //var test = _getNoteInfo() as Future<Future<Object>>;
-    //print(test);
-    // _getNoteInfo();
     super.initState();
-
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    //   context.read<ProviderData>().listTaskProvider(widget.note!.id);
-    // });
   }
 
-  Future<List<Todo>> _getTask() async {
-    final _dataTasks =
-        Services.of(context).notesService.getTaskById(widget.note?.id ?? 0);
-    // final _dataTasks =
-    //     context.watch<ProviderData>().listTaskProvider(widget.note!.id);
-
-    return _dataTasks;
-  }
-
-  Future<List<Note>> _getNoteInfo() async {
-    final _noteInfo =
-        Services.of(context).notesService.getNotesById(widget.note?.id ?? 0);
-
-    return _noteInfo;
-  }
-
-  ///
-  // Future<List<Todo>> _getTaskProvider() async {
-  //   // final _dataTasks =
-  //   //     Services.of(context).notesService.getTaskById(widget.note!.id);
-
-  //   //context.read<ProviderData>().getListOfTask = _dataTasks;
+  // Future<List<Todo>> _getTask() async {
   //   final _dataTasks =
-  //       context.read<ProviderData>().listTaskProvider(widget.note!.id);
+  //       Services.of(context).notesService.getTaskById(widget.note?.id ?? 0);
 
   //   return _dataTasks;
   // }
@@ -104,127 +73,126 @@ class _DetailPageState extends State<DetailPage> {
               style: TextStyle(color: _colText),
             ),
             IconButton(
-                color: _colText,
-                onPressed: () {
-                  showModalBottomSheet(
-                      backgroundColor:
-                          colorPallete[widget.note?.colorNote ?? 0],
-                      context: context,
-                      builder: (BuildContext context) {
-                        return SizedBox(
-                          height: sizedBoxHeightModal,
-                          child: Column(
-                            children: [
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push<Note?>(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => EditNotePage(
-                                        note: widget.note,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: SizedBox(
-                                  height: sizedBoxHeight,
-                                  child: Row(
-                                    children: [
-                                      const SizedBox(
-                                        width: 15,
-                                      ),
-                                      Icon(
-                                        Icons.note_alt_outlined,
-                                        color: _colText,
-                                      ),
-                                      const SizedBox(
-                                        width: 30,
-                                      ),
-                                      Text(
-                                        'Edit note',
-                                        style: TextStyle(color: _colText),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              InkWell(
-                                // onTap: (() => print('dddd')),
-                                child: SizedBox(
-                                  height: sizedBoxHeight,
-                                  child: Row(
-                                    children: [
-                                      const SizedBox(
-                                        width: 15,
-                                      ),
-                                      Icon(
-                                        Icons.photo_outlined,
-                                        color:
-                                            _colText.withOpacity(textOpacity),
-                                      ),
-                                      const SizedBox(
-                                        width: 30,
-                                      ),
-                                      Text(
-                                        'Add image',
-                                        style: TextStyle(
-                                          color:
-                                              _colText.withOpacity(textOpacity),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  for (int i = 0; i < taskList.length; i++) {
-                                    Services.of(context)
-                                        .notesService
-                                        .deleteTask(taskList[i].id);
-                                    _getTask();
-                                  }
-                                  Navigator.pop(context);
-                                  // ignore: no-empty-block
-                                  setState(() {});
-                                },
-                                child: SizedBox(
-                                  height: sizedBoxHeight,
-                                  child: Row(
-                                    children: [
-                                      const SizedBox(
-                                        width: 15,
-                                      ),
-                                      Icon(
-                                        Icons.delete,
-                                        color: _colText,
-                                      ),
-                                      const SizedBox(
-                                        width: 30,
-                                      ),
-                                      Text(
-                                        'Clear all tasks',
-                                        style: TextStyle(color: _colText),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
+              color: _colText,
+              onPressed: () {
+                showModalBottomSheet<void>(
+                  backgroundColor: colorPallete[widget.note?.colorNote ?? 0],
+                  context: context,
+                  builder: (BuildContext context) {
+                    return SizedBox(
+                      height: sizedBoxHeightModal,
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 15,
                           ),
-                        );
-                      },);
-                },
-                icon: const Icon(Icons.more_vert_outlined),)
+                          InkWell(
+                            onTap: () {
+                              Navigator.push<Note?>(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EditNotePage(
+                                    note: widget.note,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: SizedBox(
+                              height: sizedBoxHeight,
+                              child: Row(
+                                children: [
+                                  const SizedBox(
+                                    width: 15,
+                                  ),
+                                  Icon(
+                                    Icons.note_alt_outlined,
+                                    color: _colText,
+                                  ),
+                                  const SizedBox(
+                                    width: 30,
+                                  ),
+                                  Text(
+                                    'Edit note',
+                                    style: TextStyle(color: _colText),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          InkWell(
+                            // onTap: (() => print('dddd')),
+                            child: SizedBox(
+                              height: sizedBoxHeight,
+                              child: Row(
+                                children: [
+                                  const SizedBox(
+                                    width: 15,
+                                  ),
+                                  Icon(
+                                    Icons.photo_outlined,
+                                    color: _colText.withOpacity(textOpacity),
+                                  ),
+                                  const SizedBox(
+                                    width: 30,
+                                  ),
+                                  Text(
+                                    'Add image',
+                                    style: TextStyle(
+                                      color: _colText.withOpacity(textOpacity),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              for (int i = 0; i < taskList.length; i++) {
+                                Services.of(context)
+                                    .notesService
+                                    .deleteTask(taskList[i].id);
+                                // _getTask();
+                              }
+                              Navigator.pop(context);
+                              // ignore: no-empty-block
+                              setState(() {});
+                            },
+                            child: SizedBox(
+                              height: sizedBoxHeight,
+                              child: Row(
+                                children: [
+                                  const SizedBox(
+                                    width: 15,
+                                  ),
+                                  Icon(
+                                    Icons.delete,
+                                    color: _colText,
+                                  ),
+                                  const SizedBox(
+                                    width: 30,
+                                  ),
+                                  Text(
+                                    'Clear all tasks',
+                                    style: TextStyle(color: _colText),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
+              icon: const Icon(Icons.more_vert_outlined),
+            )
           ],
         ),
       ),
@@ -234,12 +202,13 @@ class _DetailPageState extends State<DetailPage> {
           children: <Widget>[
             Text(
               widget.note?.content ?? '',
-              style: TextStyle(fontSize: 20, color: _colText),
+              style: TextStyle(fontSize: fontSizeK, color: _colText),
             ),
             Expanded(
-                child: CheckBox(
-              note: widget.note!,
-            ),),
+              child: CheckBox(
+                note: widget.note!,
+              ),
+            ),
             const SizedBox(
               height: 20,
             ),
@@ -262,9 +231,9 @@ class _DetailPageState extends State<DetailPage> {
             children: <Widget>[
               Expanded(
                 child: TextFormField(
-                  maxLines: 5,
+                  maxLines: maxLinesK,
                   minLines: 1,
-                  maxLength: 70,
+                  maxLength: maxLengthK,
                   autofocus: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -295,13 +264,10 @@ class _DetailPageState extends State<DetailPage> {
                       .notesService
                       .createTask(taskStr, widget.note!.id);
                 }
-                // setState(() {
-                //   Navigator.of(context).pop();
-                //   _getTask();
-                // });
                 Future.delayed(const Duration(milliseconds: 200), () {
+                  // ignore: no-empty-block
                   setState(() {
-                    _getTask();
+                    // _getTask();
                   });
                 });
                 Navigator.of(context).pop();
@@ -403,7 +369,7 @@ class _CheckBoxState extends State<CheckBox> {
                         title: Text(
                           _tasks[index].task,
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: fontSizeK,
                             decoration: _tasks[index].check
                                 ? TextDecoration.lineThrough
                                 : TextDecoration.none,

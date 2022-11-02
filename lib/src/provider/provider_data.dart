@@ -43,7 +43,7 @@ class ProviderData with ChangeNotifier {
     //print(_listOfNotes);
     //return results.map((e) => toNote(e)).toList();
 
-    _listOfNotes = results.map((e) => toNote(e)).toList();
+    _listOfNotes = results.map((dynamic e) => toNote(e)).toList();
     notifyListeners();
 
     return [];
@@ -62,7 +62,7 @@ class ProviderData with ChangeNotifier {
       final result = response.data as List<dynamic>;
 
       _listOfTask =
-          result.map((e) => toTask(e as Map<String, dynamic>)).toList();
+          result.map((dynamic e) => toTask(e as Map<String, dynamic>)).toList();
       notifyListeners();
       //print(_listOfTask);
 
@@ -81,8 +81,9 @@ class ProviderData with ChangeNotifier {
     //return count;
   }
 }
+
 ///
-Note toNote(result) {
+Note toNote(dynamic result) {
   return Note(
     int.parse(result['id'].toString()),
     result['title'].toString(),
@@ -121,7 +122,9 @@ class SupabaseData {
     if (response.error == null) {
       final _listOfTask = response.data as List<dynamic>;
 
-      return _listOfTask.map((e) => toTask(e as Map<String, dynamic>)).toList();
+      return _listOfTask
+          .map((dynamic e) => toTask(e as Map<String, dynamic>))
+          .toList();
     }
     debugPrint('Error geting task: ${response.error?.message}');
 

@@ -52,12 +52,12 @@ class _EditNotePageState extends State<EditNotePage> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        width: 50,
-        height: 50,
+        width: circleHeightK,
+        height: circleHeightK,
         decoration: BoxDecoration(
           color: colorPallete[color],
           shape: BoxShape.circle,
-          border: Border.all(width: 2.0, color: Colors.black38),
+          border: Border.all(width: circleBorderK, color: Colors.black38),
         ),
         child: color == circleTap ? const Icon(Icons.done) : null,
       ),
@@ -82,7 +82,7 @@ class _EditNotePageState extends State<EditNotePage> {
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: TextFormField(
-              maxLength: 50,
+              maxLength: maxLengthK,
               autofocus: true,
               style: const TextStyle(color: whiteColor),
               controller: _titleController,
@@ -112,8 +112,8 @@ class _EditNotePageState extends State<EditNotePage> {
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: TextFormField(
-              maxLength: 100,
-              maxLines: 5,
+              maxLength: maxLengthK,
+              maxLines: maxLinesK,
               minLines: 1,
               style: const TextStyle(color: whiteColor),
               controller: _contentController,
@@ -138,7 +138,7 @@ class _EditNotePageState extends State<EditNotePage> {
             ),
           ),
           SizedBox(
-            height: 100,
+            height: sizedBoxHeightPallete,
             child: Expanded(
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,

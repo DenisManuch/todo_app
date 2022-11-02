@@ -44,10 +44,28 @@ const List<Color> colorPallete = [
 const double sizedBoxHeight = 30.0;
 
 ///
+const double sizedBoxHeightPallete = 100.0;
+
+///
 const double textOpacity = 0.5;
 
 ///
 const double sizedBoxHeightModal = 150.0;
+
+///
+const int maxLinesK = 5;
+
+///
+const int maxLengthK = 70;
+
+///
+const double fontSizeK = 20;
+
+///
+const double circleHeightK = 50;
+
+///
+const double circleBorderK = 2.0;
 
 ///
 class Note {
@@ -70,8 +88,14 @@ class Note {
   final int colorNote;
 
   ///
-  Note(this.id, this.title, this.content, this.createTime, this.modifyTime,
-      this.colorNote);
+  Note(
+    this.id,
+    this.title,
+    this.content,
+    this.createTime,
+    this.modifyTime,
+    this.colorNote,
+  );
 
   @override
   String toString() {
