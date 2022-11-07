@@ -217,25 +217,21 @@ class _DetailPageFutureState extends State<DetailPageFuture> {
                             child: SizedBox(
                               height: sizedBoxHeight,
                               child: Row(
-                                children: [
-                                  const SizedBox(
+                                children: const [
+                                  SizedBox(
                                     width: 15,
                                   ),
                                   Icon(
                                     Icons.note_alt_outlined,
-                                    color: context
-                                        .read<ProviderData>()
-                                        .getTextColor,
+                                    color: Colors.black,
                                   ),
-                                  const SizedBox(
+                                  SizedBox(
                                     width: 30,
                                   ),
                                   Text(
                                     'Edit note',
                                     style: TextStyle(
-                                      color: context
-                                          .read<ProviderData>()
-                                          .getTextColor,
+                                      color: Colors.black,
                                     ),
                                   )
                                 ],
@@ -253,12 +249,9 @@ class _DetailPageFutureState extends State<DetailPageFuture> {
                                   const SizedBox(
                                     width: 15,
                                   ),
-                                  Icon(
+                                  const Icon(
                                     Icons.photo_outlined,
-                                    color: context
-                                        .read<ProviderData>()
-                                        .getTextColor
-                                        .withOpacity(textOpacity),
+                                    color: Colors.black,
                                   ),
                                   const SizedBox(
                                     width: 30,
@@ -266,10 +259,8 @@ class _DetailPageFutureState extends State<DetailPageFuture> {
                                   Text(
                                     'Add image',
                                     style: TextStyle(
-                                      color: context
-                                          .read<ProviderData>()
-                                          .getTextColor
-                                          .withOpacity(textOpacity),
+                                      color:
+                                          Colors.black.withOpacity(textOpacity),
                                     ),
                                   ),
                                 ],
@@ -284,25 +275,21 @@ class _DetailPageFutureState extends State<DetailPageFuture> {
                             child: SizedBox(
                               height: sizedBoxHeight,
                               child: Row(
-                                children: [
-                                  const SizedBox(
+                                children: const [
+                                  SizedBox(
                                     width: 15,
                                   ),
                                   Icon(
                                     Icons.delete,
-                                    color: context
-                                        .read<ProviderData>()
-                                        .getTextColor,
+                                    color: Colors.black,
                                   ),
-                                  const SizedBox(
+                                  SizedBox(
                                     width: 30,
                                   ),
                                   Text(
                                     'Clear all tasks',
                                     style: TextStyle(
-                                      color: context
-                                          .read<ProviderData>()
-                                          .getTextColor,
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ],
