@@ -68,7 +68,8 @@ class _DetailPageFutureState extends State<DetailPageFuture> {
     if (taskStr.isNotEmpty) {
       Services.of(context).notesService.createTask(
             taskStr,
-            Provider.of<ProviderData>(context).getNoteInfo?.id ?? 0,
+            Provider.of<ProviderData>(context, listen: false).getNoteInfo?.id ??
+                0,
           );
     }
     Future.delayed(const Duration(milliseconds: 200), () {

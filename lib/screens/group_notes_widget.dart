@@ -73,12 +73,6 @@ class _GroupNotesWidgetState extends State<GroupNotesWidget> {
         actions: [
           IconButton(
             onPressed: () {
-              Provider.of<ProviderData>(context, listen: false).deleteAllNote();
-            },
-            icon: const Icon(Icons.abc),
-          ),
-          IconButton(
-            onPressed: () {
               refresh();
             },
             icon: const Icon(Icons.refresh),
