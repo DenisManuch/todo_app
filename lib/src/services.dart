@@ -55,7 +55,7 @@ class AuthService {
   Future<bool> signUp(String email, String password) async {
     final response = await _client.signUp(email, password);
     if (response.error == null) {
-      await _persistSession(response.data!);
+      await _persistSession(response.data ?? Session(accessToken: ''));
 
       return true;
     }
@@ -66,7 +66,7 @@ class AuthService {
   Future<bool> signIn(String email, String password) async {
     final response = await _client.signIn(email: email, password: password);
     if (response.error == null) {
-      await _persistSession(response.data!);
+      await _persistSession(response.data ?? Session(accessToken: ''));
 
       return true;
     }
@@ -94,10 +94,11 @@ class AuthService {
   Future<bool> recoverSession() async {
     final prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey(supabaseSessionKey)) {
-      final jsonStr = prefs.getString(supabaseSessionKey)!;
+      final jsonStr = prefs.getString(supabaseSessionKey) ?? '';
       final response = await _client.recoverSession(jsonStr);
       if (response.error == null) {
-        await _persistSession(response.data!);
+        await _persistSession(response.data ?? Session(accessToken: ''));
+
 
         return true;
       }

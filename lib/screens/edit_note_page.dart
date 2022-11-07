@@ -1,13 +1,14 @@
-// ignore_for_file: public_member_api_docs, lines_longer_than_80_chars
-
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
 import 'package:todo_app/src/constants.dart';
+import 'package:todo_app/src/models/note.dart';
+import 'package:todo_app/src/provider/provider_data.dart';
 import 'package:todo_app/src/services.dart';
-
+///
 class EditNotePage extends StatefulWidget {
+  ///
   final Note? note;
-
+///
   const EditNotePage({this.note});
 
   @override
@@ -20,8 +21,8 @@ class _EditNotePageState extends State<EditNotePage> {
   int _colorTap = 0;
 
   Future<void> _saveNote() async {
-    final title = _titleController.text;
-    final content = _contentController.text;
+    final title = _titleController.text.trim();
+    final content = _contentController.text.trim();
     if (title.isEmpty) {
       _showSnackBar('Title cannot be empty.');
 
@@ -29,7 +30,7 @@ class _EditNotePageState extends State<EditNotePage> {
     }
     final note = await _createOrUpdateNote(title, content);
     if (note != null) {
-      // ignore: use_build_context_synchronously
+      Provider.of<ProviderData>(context, listen: false).changeNote(note);
       Navigator.pop(context, note);
     } else {
       _showSnackBar('Something went wrong.');
@@ -41,7 +42,11 @@ class _EditNotePageState extends State<EditNotePage> {
 
     return widget.note != null
         ? notesService.updateNote(
-            widget.note?.id ?? 0, title, content, _colorTap)
+            widget.note?.id ?? 0,
+            title,
+            content,
+            _colorTap,
+          )
         : notesService.createNote(title, content, _colorTap);
   }
 
@@ -96,13 +101,6 @@ class _EditNotePageState extends State<EditNotePage> {
               minLines: 1,
               style: const TextStyle(color: whiteColor),
               controller: _contentController,
-              // validator: (value) {
-              //   if (value == null || value.isEmpty) {
-              //     return 'Please, enter some text';
-              //   }
-
-              //   return null;
-              // },
               decoration: const InputDecoration(
                 counterStyle: TextStyle(color: whiteColor),
                 hintText: 'Description',
@@ -118,24 +116,22 @@ class _EditNotePageState extends State<EditNotePage> {
           ),
           SizedBox(
             height: sizedBoxHeightPallete,
-            child: Expanded(
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: colorPallete.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      _colorTap = index;
-                      // ignore: no-empty-block
-                      setState(() {});
-                    },
-                    child: CircleTap(
-                      color: index,
-                      circleTap: _colorTap,
-                    ),
-                  );
-                },
-              ),
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: colorPallete.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    _colorTap = index;
+                    // ignore: no-empty-block
+                    setState(() {});
+                  },
+                  child: CircleTap(
+                    color: index,
+                    circleTap: _colorTap,
+                  ),
+                );
+              },
             ),
           ),
         ],
@@ -164,10 +160,13 @@ class _EditNotePageState extends State<EditNotePage> {
     super.dispose();
   }
 }
-
+///
 class CircleTap extends StatelessWidget {
+  ///
   final int color;
+  ///
   final int circleTap;
+  ///
   const CircleTap({Key? key, required this.color, required this.circleTap})
       : super(key: key);
 

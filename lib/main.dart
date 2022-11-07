@@ -28,6 +28,11 @@ class Main extends StatelessWidget {
         create: (context) => ProviderData(),
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
+          initialRoute: '/',
+          routes: {
+            '/home': (context) => const GroupNotesWidget(),
+            '/login': (context) => const LoginWidget(),
+          },
           title: 'Login',
           theme: ThemeData(
             primaryColor: primaryColor,
@@ -43,7 +48,7 @@ class Main extends StatelessWidget {
                 future: Services.of(context).authService.recoverSession(),
                 builder: (context, snapshot) {
                   final sessionRecovered = snapshot.data ?? false;
-      
+
                   return sessionRecovered
                       ? const GroupNotesWidget()
                       : const LoginWidget();

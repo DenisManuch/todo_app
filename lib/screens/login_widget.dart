@@ -1,6 +1,5 @@
-// ignore_for_file: use_build_context_synchronously, avoid_void_async
-
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:todo_app/screens/group_notes_widget.dart';
 import 'package:todo_app/src/services.dart';
 
@@ -63,6 +62,9 @@ class _LoginWidgetState extends State<LoginWidget> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Expanded(
+              child: Image.network(dotenv.get('loginPicture')),
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(

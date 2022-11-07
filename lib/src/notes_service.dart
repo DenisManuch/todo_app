@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:todo_app/src/constants.dart';
+import 'package:todo_app/src/models/note.dart';
 
 ///
 class NotesService {
