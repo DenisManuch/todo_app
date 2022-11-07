@@ -7,6 +7,7 @@ import 'package:todo_app/src/models/note.dart';
 import 'package:todo_app/src/provider/provider_data.dart';
 import 'package:todo_app/src/services.dart';
 import 'package:todo_app/widgets/checkbox_widget.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 ///
 class DetailPage extends StatefulWidget {
@@ -69,7 +70,6 @@ class _DetailPageFutureState extends State<DetailPageFuture> {
             taskStr,
             Provider.of<ProviderData>(context).getNoteInfo?.id ?? 0,
           );
-          
     }
     Future.delayed(const Duration(milliseconds: 200), () {
       setState(() {
@@ -149,6 +149,11 @@ class _DetailPageFutureState extends State<DetailPageFuture> {
 
   @override
   Widget build(BuildContext context) {
+    final String _lastChangesTime = timeago.format(
+      Provider.of<ProviderData>(context).getNoteInfo?.modifyTime ??
+          DateTime.now(),
+    );
+
     return Scaffold(
       appBar: AppBar(
         actions: const [
@@ -178,7 +183,7 @@ class _DetailPageFutureState extends State<DetailPageFuture> {
               icon: const Icon(Icons.add_box_outlined),
             ),
             Text(
-              'Last changes: ${Provider.of<ProviderData>(context).getNoteInfo?.modifyTime.hour ?? 0}:${Provider.of<ProviderData>(context).getNoteInfo?.modifyTime.minute ?? 0}',
+              'Last changes: $_lastChangesTime',
               style:
                   TextStyle(color: context.read<ProviderData>().getTextColor),
             ),

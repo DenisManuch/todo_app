@@ -37,6 +37,7 @@ dependencies:
   provider: ^6.0.4
   shared_preferences:
   supabase_flutter: ^0.3.3
+  timeago: ^3.3.0
   
   
 
