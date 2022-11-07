@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:todo_app/screens/edit_note_page.dart';
 import 'package:todo_app/src/constants.dart';
 import 'package:todo_app/src/models/note.dart';
 import 'package:todo_app/src/provider/provider_data.dart';
 import 'package:todo_app/src/services.dart';
 import 'package:todo_app/widgets/checkbox_widget.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 ///
 class DetailPage extends StatefulWidget {
