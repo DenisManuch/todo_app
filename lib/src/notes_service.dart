@@ -181,7 +181,7 @@ class NotesService {
   Todo toTask(Map<String, dynamic> result) {
     return Todo(
       int.parse(result['id'].toString()),
-      result['check_task'] as bool,
+      check: result['check_task'] as bool,
       result['text'].toString(),
     );
   }

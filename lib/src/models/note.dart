@@ -46,7 +46,11 @@ class Todo {
   final String task;
 
   ///
-  Todo(this.id, this.check, this.task);
+  Todo(
+    this.id,
+    this.task, {
+    required this.check,
+  });
 
   @override
   String toString() {
