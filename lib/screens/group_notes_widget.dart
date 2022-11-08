@@ -123,7 +123,9 @@ class _GroupNotesWidgetState extends State<GroupNotesWidget> {
       direction: DismissDirection.endToStart,
       confirmDismiss: (_) =>
           Services.of(context).notesService.deleteNote(note.id),
-      onDismissed: (_) => setState(() {}),
+      onDismissed: (_) => setState(() {
+         debugPrint('');// crutch
+      }),
       background: Container(
         padding: const EdgeInsets.all(16.0),
         color: Theme.of(context).errorColor,
@@ -162,11 +164,13 @@ class _LogOutButtonState extends State<_LogOutButton> {
   Future<void> _signOut() async {
     final success = await Services.of(context).authService.signOut();
     if (success) {
+      if (!mounted) return;
       await Navigator.pushReplacement<void, void>(
         context,
         MaterialPageRoute(builder: (_) => const LoginWidget()),
       );
     } else {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('There was an issue logging out.'),

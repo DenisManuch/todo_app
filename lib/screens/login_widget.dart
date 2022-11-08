@@ -17,22 +17,24 @@ class _LoginWidgetState extends State<LoginWidget> {
   final _passwordController = TextEditingController();
 
   ///
-  void _signUp() async {
+  Future<void> _signUp() async {
     final success = await Services.of(context)
         .authService
         .signUp(_emailController.text, _passwordController.text);
     if (success) {
+      if (!mounted) return;
       await Navigator.pushReplacement<void, void>(
         context,
         MaterialPageRoute(builder: (_) => const GroupNotesWidget()),
       );
     } else {
+      if (!mounted) return;
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Something went wrong.')));
     }
   }
 
-  void _signIn() async {
+  Future<void> _signIn() async {
     final success = await Services.of(context)
         .authService
         .signIn(_emailController.text, _passwordController.text);

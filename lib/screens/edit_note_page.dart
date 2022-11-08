@@ -30,6 +30,7 @@ class _EditNotePageState extends State<EditNotePage> {
     }
     final note = await _createOrUpdateNote(title, content);
     if (note != null) {
+      if (!mounted) return;
       Provider.of<ProviderData>(context, listen: false).changeNote(note);
       Navigator.pop(context, note);
     } else {

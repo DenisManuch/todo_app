@@ -74,7 +74,7 @@ class _DetailPageFutureState extends State<DetailPageFuture> {
     }
     Future.delayed(const Duration(milliseconds: 200), () {
       setState(() {
-        // _getTask();
+        debugPrint('');// crutch
       });
     });
     Navigator.of(context).pop();
@@ -144,7 +144,9 @@ class _DetailPageFutureState extends State<DetailPageFuture> {
                 .id,
           );
     }
-    setState(() {});
+    setState(() {
+       debugPrint('');// crutch
+    });
     Navigator.pop(context);
   }
 

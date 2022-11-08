@@ -30,7 +30,7 @@ class Note {
 
   @override
   String toString() {
-    return 'Note{id: $id, title: $title, content: $content, createTime: $createTime, modifyTime: $modifyTime, color_note: $colorNote,}';
+    return ''' Note{id: $id, title: $title, content: $content, createTime: $createTime, modifyTime: $modifyTime, color_note: $colorNote,} ''';
   }
 }
 

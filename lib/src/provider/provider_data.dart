@@ -15,6 +15,17 @@ class ProviderData with ChangeNotifier {
 
   ///
   bool get getRemoveTask => _removeTaskBool;
+  ///
+  Color get getTextColor => _textColor;
+   ///
+  List<Note> get getNoteList => noteList;
+
+   ///
+  List<Todo> get getTaskList => taskListProvider;
+  
+
+  ///
+  Note? get getNoteInfo => noteInfo;
 
   ///
   void remove() {
@@ -28,7 +39,7 @@ class ProviderData with ChangeNotifier {
   }
 
 ///
-   Color get getTextColor => _textColor;
+   
 
   ///
   Future<void> updateColor(int colorId) async {
@@ -44,14 +55,7 @@ class ProviderData with ChangeNotifier {
   ///
  
 
-  ///
-  List<Note> get getNoteList => noteList;
-
-  ///
-  
-
-  ///
-  Note? get getNoteInfo => noteInfo;
+ 
 
   ///
   void fetchNoteDate(Note note) {
@@ -78,8 +82,7 @@ class ProviderData with ChangeNotifier {
 
   ///
 
-  ///
-  List<Todo> get getTaskList => taskListProvider;
+ 
 
   ///
   void removeTask(int taskIndex) {
