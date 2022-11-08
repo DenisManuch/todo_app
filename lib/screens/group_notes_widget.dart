@@ -1,13 +1,17 @@
-// ignore_for_file: public_member_api_docs, use_build_context_synchronously
+import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app/screens/detail_page.dart';
 import 'package:todo_app/screens/edit_note_page.dart';
 import 'package:todo_app/screens/login_widget.dart';
 import 'package:todo_app/src/constants.dart';
+import 'package:todo_app/src/models/note.dart';
+import 'package:todo_app/src/provider/provider_data.dart';
 import 'package:todo_app/src/services.dart';
-
+///
 class GroupNotesWidget extends StatefulWidget {
+  ///
   const GroupNotesWidget({Key? key}) : super(key: key);
 
   @override
@@ -38,9 +42,15 @@ class _GroupNotesWidgetState extends State<GroupNotesWidget> {
   }
 
   Future<void> _detailNote(Note note) async {
+    Provider.of<ProviderData>(context, listen: false).noteInfo = note;
     final updatedNote = await Navigator.push<Note?>(
       context,
-      MaterialPageRoute(builder: (context) => DetailPage(note: note)),
+      MaterialPageRoute(
+        builder: (context) => DetailPage(
+          note: note,
+          noteId: note.id,
+        ),
+      ),
     );
     if (updatedNote != null) {
       // ignore: no-empty-block
@@ -62,12 +72,11 @@ class _GroupNotesWidgetState extends State<GroupNotesWidget> {
         title: const Text('List of notes'),
         actions: [
           IconButton(
-              onPressed: () {
-                //context.read<ProviderData>().getNotesData();
-                refresh();
-              },
-              icon: const Icon(Icons.refresh),),
-          //_logOutButton(),
+            onPressed: () {
+              refresh();
+            },
+            icon: const Icon(Icons.refresh),
+          ),
           const _LogOutButton(),
         ],
       ),
@@ -86,9 +95,14 @@ class _GroupNotesWidgetState extends State<GroupNotesWidget> {
                   (x, y) =>
                       y.modifyTime.difference(x.modifyTime).inMilliseconds,
                 );
+              Provider.of<ProviderData>(context).noteList = notes;
+              //notess = notes;
 
               return Column(
-                children: notes.map(_toNoteWidget).toList(),
+                children: Provider.of<ProviderData>(context)
+                    .getNoteList
+                    .map(_toNoteWidget)
+                    .toList(),
               );
             },
           ),
@@ -103,13 +117,15 @@ class _GroupNotesWidgetState extends State<GroupNotesWidget> {
   }
 
   Widget _toNoteWidget(Note note) {
+
     return Dismissible(
       key: ValueKey(note.id),
       direction: DismissDirection.endToStart,
       confirmDismiss: (_) =>
           Services.of(context).notesService.deleteNote(note.id),
-      // ignore: no-empty-block
-      onDismissed: (_) => setState(() {}),
+      onDismissed: (_) => setState(() {
+         debugPrint('');// crutch
+      }),
       background: Container(
         padding: const EdgeInsets.all(16.0),
         color: Theme.of(context).errorColor,
@@ -137,7 +153,6 @@ class _GroupNotesWidgetState extends State<GroupNotesWidget> {
   }
 }
 
-
 class _LogOutButton extends StatefulWidget {
   const _LogOutButton({Key? key}) : super(key: key);
 
@@ -149,11 +164,13 @@ class _LogOutButtonState extends State<_LogOutButton> {
   Future<void> _signOut() async {
     final success = await Services.of(context).authService.signOut();
     if (success) {
+      if (!mounted) return;
       await Navigator.pushReplacement<void, void>(
         context,
         MaterialPageRoute(builder: (_) => const LoginWidget()),
       );
     } else {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('There was an issue logging out.'),
@@ -161,6 +178,7 @@ class _LogOutButtonState extends State<_LogOutButton> {
       );
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return IconButton(
